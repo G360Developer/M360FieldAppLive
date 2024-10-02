@@ -1,0 +1,28 @@
+<div>
+    <h1> Depth Reference</h1>
+    <select @bind="SelectedWellType">
+        <option value="GroundSurface">GroundSurface</option>
+        <option value="6inCasing">6inCasing</option>
+        <option value="FlushMount">FlushMount</option>
+        <option value="10.25inCasing">10.25inCasing</option>
+        <option value="4inCasing">4inCasing</option>
+        <option value="ProTop">ProTop</option>
+        <option value="8.25inCasing">8.25inCasing</option>
+        <option value="5cm aux ref">5cm aux ref</option>
+        <option value="10cm aux ref">10cm aux ref</option>
+
+    </select>
+    <button @onclick="SubmitData">Submit</button>
+    <p>You said: @SubmittedData</p>
+</div>
+
+@code {
+    private string Data;
+    private string SubmittedData;
+    private string SelectedWellType;
+
+    private void SubmitData()
+    {
+        SubmittedData = SelectedWellType;
+    }
+}

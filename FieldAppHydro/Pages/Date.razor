@@ -1,0 +1,17 @@
+<div>
+    <h1>Date</h1>
+    <input type="datetime-local" @bind="SelectedDateTime" />
+    <button @onclick="SubmitData">Submit</button>
+    <p>You said: @SubmittedData</p>
+</div>
+
+@code {
+    private string Data;
+    private string SubmittedData;
+    private DateTime SelectedDateTime;
+
+    private void SubmitData()
+    {
+        SubmittedData = SelectedDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+    }
+}

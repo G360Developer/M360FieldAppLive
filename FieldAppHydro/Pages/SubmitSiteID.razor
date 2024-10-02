@@ -1,0 +1,16 @@
+<div>
+    <h1> SiteID</h1>
+    <input type="text" @bind="Data" />
+    <button @onclick="SubmitData">Submit</button>
+    <p>You said: @SubmittedData</p>
+</div>
+
+@code {
+    private string Data;
+    private string SubmittedData;
+
+    private void SubmitData()
+    {
+        SubmittedData = Data;
+    }
+}

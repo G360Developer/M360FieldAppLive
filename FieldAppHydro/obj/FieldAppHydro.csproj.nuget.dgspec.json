@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/caleb/Desktop/FieldAppHydro/FieldAppHydro.csproj": {}
+    "/Users/caleb/Desktop/Computer/MG360FieldApp/FieldAppHydro/FieldAppHydro.csproj": {}
   },
   "projects": {
-    "/Users/caleb/Desktop/FieldAppHydro/FieldAppHydro.csproj": {
+    "/Users/caleb/Desktop/Computer/MG360FieldApp/FieldAppHydro/FieldAppHydro.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/caleb/Desktop/FieldAppHydro/FieldAppHydro.csproj",
+        "projectUniqueName": "/Users/caleb/Desktop/Computer/MG360FieldApp/FieldAppHydro/FieldAppHydro.csproj",
         "projectName": "FieldAppHydro",
-        "projectPath": "/Users/caleb/Desktop/FieldAppHydro/FieldAppHydro.csproj",
+        "projectPath": "/Users/caleb/Desktop/Computer/MG360FieldApp/FieldAppHydro/FieldAppHydro.csproj",
         "packagesPath": "/Users/caleb/.nuget/packages/",
-        "outputPath": "/Users/caleb/Desktop/FieldAppHydro/obj/",
+        "outputPath": "/Users/caleb/Desktop/Computer/MG360FieldApp/FieldAppHydro/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/caleb/.nuget/NuGet/NuGet.Config"
@@ -43,6 +43,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Blazor.LocalStorage.WebAssembly": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Blazored.LocalStorage": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
             "BootstrapBlazor": {
               "target": "Package",
               "version": "[8.10.1, )"
@@ -51,10 +59,30 @@
               "target": "Package",
               "version": "[8.0.8, )"
             },
+            "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
             "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.8, )"
+            },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.Authentication.WebAssembly.Msal": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0-rc.1.24451.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.0-rc.1.24451.1, )"
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
@@ -67,6 +95,26 @@
               "target": "Package",
               "version": "[8.0.8, )",
               "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "Plugin.Connectivity": {
+              "target": "Package",
+              "version": "[1.0.2, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[9.0.0-rc.2.24473.5, )"
+            },
+            "Xam.Plugin.Connectivity": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.2, )"
             }
           },
           "imports": [

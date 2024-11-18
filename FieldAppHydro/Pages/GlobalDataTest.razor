@@ -1,0 +1,274 @@
+@page "/globaldata"
+@using System.Net.Http.Json;
+@using FieldAppHydro.Data;
+@using Blazored.LocalStorage;
+@using System.Threading.Tasks;
+@using Microsoft.AspNetCore;
+
+@inject StationDataService StationDataService
+@inject PersonnelService PersonnelService
+@inject ElevationDataService ElevationDataService 
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@inject NavigationManager NavigationManager
+
+
+@code {
+
+    private List<StationDetails> stations;
+
+    private List<PersonnelLookupData> personnel;
+
+    private List<ElevationData> elevations;
+
+    private string firstSiteId;
+
+    private string selectedSiteId;
+
+    private string firstStationId;
+
+    private string selectedStationId;
+
+    private DateTime submissionTime;
+
+    private string selectedStationType;
+
+    private string selectedPersonnel;
+
+    private string selectedUnitType;
+
+    private string selectedElevRef;
+
+    private string selectedMeasurementType;
+
+    private string Comments;
+
+    private const string PendingDataKey = "pendingData";
+
+
+
+    protected override async Task OnInitializedAsync()
+
+    {
+
+
+
+        stations = await StationDataService.GetStationsAsync();
+
+        if (stations.Any())
+
+        {
+
+            firstSiteId = stations[0].SiteID;
+            selectedSiteId = firstSiteId; // Set initial selected value
+
+
+            firstStationId = stations[0].StationID;
+            selectedStationId = firstStationId;
+
+        }
+        personnel = await PersonnelService.GetPersonnelAsync();
+
+        elevations = await ElevationDataService.GetElevationDataAsync();
+
+        
+
+    }
+
+
+    protected override void OnInitialized()
+
+    {
+
+        submissionTime = DateTime.Now;
+
+    }
+    
+private async Task SubmitData()
+
+    {
+
+        var stationData = new StationData
+
+        {
+
+            SiteID = selectedSiteId,
+
+            StationID = selectedStationId,
+
+            WellType = selectedStationType,
+
+            Personnel = selectedPersonnel, // Assuming PersonnelID is used
+
+            Date = submissionTime, // Assuming 'submissiontime' is the element id for datetime input
+
+            Unit = selectedUnitType,
+
+            DepthReference = selectedElevRef,
+
+            MeasurementType = selectedMeasurementType,
+
+            Comments = Comments
+
+        };
+
+
+         var pendingData = await _localStorage.GetItemAsync<List<StationData>>(PendingDataKey) ?? new();
+
+    // Add current data to pending list
+    pendingData.Add(stationData);
+
+    // Store updated pending data in local storage
+    await _localStorage.SetItemAsync(PendingDataKey, pendingData);
+
+
+
+    }
+
+@code {
+    private async Task NavigateToHomePage()
+    {
+        await SubmitData(); // Your data submission logic
+        NavigationManager.NavigateTo("/");
+    }
+}
+
+    }
+
+
+<label style="color: darkblue; font-weight: bold;" for="selectedSiteId">  Select Site ID : </label>
+
+<select @bind="selectedSiteId">
+
+    @foreach (var station in stations.DistinctBy(s => s.SiteID))
+
+    {
+
+        <option value="@station.SiteID">@station.SiteID</option>
+
+    }
+
+</select>
+
+
+<br><br>
+
+<label style="color: darkblue; font-weight: bold;" for="selectedStationId">Select Station ID:</label>
+
+<select @bind="selectedStationId">
+
+    @foreach (var station in stations.DistinctBy(s => s.StationID)) 
+
+    {
+
+        <option value="@station.StationID">@station.StationID</option>
+
+    }
+
+</select>
+
+
+<br><br>
+
+
+
+<label style="color: darkblue; font-weight: bold;" for="selectedStationType">  Select Station Type : </label>
+
+<select @bind="selectedStationType">
+
+            <option value="Waterloo MLS">Waterloo MLS</option>
+
+            <option value="FLUTe MLS">FLUTe MLS</option>
+
+            <option value="CMT MLS">CMT MLS</option>
+
+            <option value="Piezometer">Piezometer</option>
+
+            <option value="WestBay MLS">WestBay MLS</option>
+
+            <option value="Corehole">Corehole</option>
+
+            <option value="Borehole">Borehole</option>
+
+            <option value="FLUTe lined hole">FLUTe lined hole</option>
+
+            <option value="FLUTe Liner">FLUTe Liner</option>
+
+            <option value="G360 MPS">G360 MPS</option>
+
+</select>
+
+<br><br>
+
+
+<label style="color: darkblue; font-weight: bold;" for="selectedPersonnel">Select Personnel : </label>
+
+<select @bind="selectedPersonnel">
+
+@foreach (var person in personnel.DistinctBy(p => p.PersonnelID))
+
+    {
+
+        <option value="@person.PersonnelID">@person.FirstName @person.LastName</option>
+
+    }
+
+</select>
+
+<br><br>
+
+
+<label style="color: darkblue; font-weight: bold;" for="submissiontime">Select Date:</label>
+
+<input type="datetime-local" id="submissiontime" name="submissionTime" @bind="submissionTime" />
+
+<br><br>
+
+
+<label style="color: darkblue; font-weight: bold;" for="selectedUnitType">Select Unit Type : </label>
+
+<select @bind="selectedUnitType">
+
+            <option value="Feet">Feet</option>
+
+            <option value="Meters">Meters</option>
+
+</select>
+
+<br><br>
+
+<div>
+
+        <label style="color: darkblue; font-weight: bold;" for="DepthReference">Depth Reference:</label>
+
+<select @bind="selectedElevRef">
+    @foreach (var elevation in elevations?.Where(e => e != null).DistinctBy(e => e.ElevRefID) ?? Enumerable.Empty<ElevationData>())
+    {
+        <option value="@elevation.ElevRefID">@elevation.ElevRefID</option>
+    }
+</select>
+
+</div>
+
+<br><br>
+
+<label style="color: darkblue; font-weight: bold;" for="SelectedMeasurementType">Select Measurement Type: </label>
+
+<select @bind="selectedMeasurementType">
+
+            <option value="Water Level Tape">Water Level Tape</option>
+
+            <option value="Other">Other</option>
+
+</select>
+
+<br><br>
+
+
+<label style="color: darkblue; font-weight: bold;" for="Comments">Comments : </label>
+
+  <input @bind="Comments "type="text" id="Comments" name="Comments"><br><br>
+
+
+
+<button @onclick="NavigateToHomePage">Submit Data</button>

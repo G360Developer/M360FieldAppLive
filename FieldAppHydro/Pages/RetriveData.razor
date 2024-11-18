@@ -1,0 +1,42 @@
+@page "/corebox"
+@using System.Net;
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore
+
+@inject HttpClient Http
+
+<h1>Latest Station Data</h1>
+
+<pre>@apiResponse</pre>
+
+@code {
+    private string apiResponse = "";
+    private bool isLoading = true;
+    private bool isError = false;
+    private string errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://mg360fieldapplicationapi.azurewebsites.net/api/stationdata");
+            if (response.IsSuccessStatusCode)
+            {
+                apiResponse = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                // Handle API error
+                isError = true;
+                errorMessage = $"API call failed with status code {response.StatusCode}";
+            }
+            isLoading = false;
+        }
+        catch (Exception ex)
+        {
+            isError = true;
+            errorMessage = ex.Message;
+            isLoading = false;
+        }
+    }
+}

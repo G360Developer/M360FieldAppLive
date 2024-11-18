@@ -1,0 +1,15 @@
+{
+    "auth": {
+        "identityProviders": {
+            "azureActiveDirectory": {
+                "registration": {
+                    "clientId": "057556ec-4213-4833-afe9-4124f85a2484",
+                    "openIdIssuer": "https://login.microsoftonline.com/a17f46de-c95f-42c1-b34e-8535d84aecd6/v2.0"
+                },
+                "login": {
+                    "loginParameters": ["response_type=id_token"]
+                }
+            }
+        }
+    }
+}

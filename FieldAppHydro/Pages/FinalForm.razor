@@ -1,0 +1,106 @@
+@page "/station-form"
+@using FieldAppHydro.Data
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore
+
+<h3>Station Data Form</h3>
+
+<EditForm Model="stationData" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="SiteID">SiteID:</label>
+        <InputNumber id="SiteID" @bind-Value="stationData.SiteID" />
+    </div>
+    <br />
+    
+    <div>
+        <label for="StationID">StationID:</label>
+        <InputNumber id="StationID" @bind-Value="stationData.StationID" />
+    </div>
+    <br />
+    
+    <div>
+        <label for="WellType">Well Type:</label>
+        <InputSelect id="WellType" @bind-Value="stationData.WellType">
+            <option value="Waterloo MLS">Waterloo MLS</option>
+            <option value="FLUTe MLS">FLUTe MLS</option>
+            <option value="CMT MLS">CMT MLS</option>
+            <option value="Piezometer">Piezometer</option>
+        </InputSelect>
+    </div>
+    <br />
+    
+    <div>
+        <label for="Personnel">Personnel:</label>
+        <InputText id="Personnel" @bind-Value="stationData.Personnel" />
+    </div>
+    <br />
+
+    <div>
+        <label for="Date">Date:</label>
+        <InputDate id="Date" @bind-Value="stationData.Date" />
+    </div>
+    <br />
+    
+    <div>
+        <label for="Unit">Unit:</label>
+        <InputSelect id="Unit" @bind-Value="selectedUnit">
+            <option value="meters">Meters</option>
+            <option value="feet">Feet</option>
+        </InputSelect>
+    </div>
+    <br />
+    
+    <div>
+        <label for="DepthReference">Depth Reference:</label>
+        <InputSelect id="DepthReference" @bind-Value="stationData.DepthReference">
+            <option value="GroundSurface">GroundSurface</option>
+            <option value="6inCasing">6inCasing</option>
+            <option value="FlushMount">FlushMount</option>
+            <option value="10.25inCasing">10.25inCasing</option>
+            <option value="4inCasing">4inCasing</option>
+            <option value="ProTop">ProTop</option>
+            <option value="8.25inCasing">8.25inCasing</option>
+            <option value="5cm aux ref">5cm aux ref</option>
+            <option value="10cm aux ref">10cm aux ref</option>
+        </InputSelect>
+    </div>
+    <br />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private StationData stationData = new StationData
+    {
+        Date = DateTime.Now
+    };
+
+    private string selectedUnit = "meters"; // Default unit
+
+    @inject HttpClient Http
+
+private async Task HandleValidSubmit()
+{
+    var response = await Http.PostAsJsonAsync("https://mg360fieldapplicationapi.azurewebsites.net/api/stationdata", stationData);
+
+    if (response.IsSuccessStatusCode)
+    {
+        Console.WriteLine("Data submitted successfully");
+        // Show success message to the user
+    }
+    else
+    {
+        Console.WriteLine("Error submitting data: Check Connection or API server");
+        // Handle error and display a message to the user
+    }
+}
+
+    private Task SaveStationDataAsync(StationData data)
+    {
+        // Implement logic to save the data.
+        return Task.CompletedTask;
+    }
+}

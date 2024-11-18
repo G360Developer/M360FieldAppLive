@@ -1,5 +1,12 @@
 {
     "appService.preDeployTask": "publish-release",
     "appService.deploySubpath": "bin/Release/net8.0/publish",
-    "appService.defaultWebAppToDeploy": "undefined/subscriptions/1fd74182-9f73-4a40-9d56-2f22f17b8e54/resourceGroups/FieldAppHydroResourceGroup/providers/Microsoft.Web/sites/FieldAppHydro"
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/1fd74182-9f73-4a40-9d56-2f22f17b8e54/resourceGroups/FieldAppHydroResourceGroup/providers/Microsoft.Web/sites/FieldAppHydro",
+    "DefaultConnection": "Server=tcp:g360server.database.windows.net,1433;Initial Catalog=StagingDB;Persist Security Info=False;User ID=g360developer;Password=G360AppsOnDemand42!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+    "AzureAd": {
+   "Authority": "https://login.microsoftonline.com/a17f46de-c95f-42c1-b34e-8535d84aecd6",
+          "ClientId": "057556ec-4213-4833-afe9-4124f85a2484",
+          "ValidateAuthority": true
+        }
+      
 }

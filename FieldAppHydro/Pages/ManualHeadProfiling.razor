@@ -1,9 +1,17 @@
 @page "/manualheadprofiling"
+@inject NavigationManager Navigation
 
-<SubmitSiteID />
-<SubmitStationID />
-<SubmitWellType />
-<Personnel />
-<Date />
-<Unit />
-<DepthReference />
+<AuthorizeView>
+    <Authorized>
+        <FinalForm />
+        <h1>We're moving in the right direction</h1>
+        <!-- Logout Button -->
+        <button @onclick="@(() => Navigation.NavigateTo("authentication/logout", forceLoad: false))">Logout</button>
+    </Authorized>
+
+    <NotAuthorized>
+        <h1>You are not authorized to view this content.</h1>
+        <!-- Login Button -->
+        <button @onclick="@(() => Navigation.NavigateTo("authentication/login", forceLoad: false))">Login</button>
+    </NotAuthorized>
+</AuthorizeView>

@@ -1,0 +1,110 @@
+@page "/stationdetails"
+
+@using FieldAppHydro.Data
+@using System.Threading.Tasks
+@using Microsoft.AspNetCore
+@using Newtonsoft.Json;
+@using System.Linq;
+
+@inject HttpClient Http
+
+<h1>Latest Station Data</h1>
+
+<div>
+    <label for="siteIdDropdown">Select SiteID:</label>
+    <InputSelect id="siteIdDropdown" @bind-Value="selectedSiteId" @onchange="HandleSiteIdSelection">
+        <option value="">-- Select Site ID --</option>
+        @foreach (var uniqueSiteId in uniqueSiteIds)
+        {
+            <option value="@uniqueSiteId">@uniqueSiteId</option>
+        }
+    </InputSelect>
+</div>
+
+@if (isLoading)
+{
+    <p><em>Loading station details...</em></p>
+}
+else if (isError)
+{
+    <p class="error">Error: @errorMessage</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>SiteID</th>
+                <th>StationID</th>
+                <th>WellType</th>
+                <th>Personnel</th>
+                <th>Date</th>
+                <th>DepthReference</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stationDetail in stationDetailsList)
+            {
+                <tr>
+                    <td>@stationDetail.SiteID</td>
+                    <td>@stationDetail.StationID</td>
+                    <td>@stationDetail.StationType</td>
+                    <td>@stationDetail.StartDate</td>
+                    <td>@stationDetail.EndDate</td>
+                    <td>@stationDetail.Comments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div>
+    <label for="siteIdDropdown">Select SiteID:</label>
+    <InputSelect id="siteIdDropdown" @bind-Value="selectedSiteId" @onchange="HandleSiteIdSelection">
+        <option value="">-- Select Site ID --</option>
+        @foreach (var uniqueSiteId in uniqueSiteIds)
+        {
+            <option value="@uniqueSiteId">@uniqueSiteId</option>
+        }
+    </InputSelect>
+</div>
+
+@code {
+private List<StationDetails> stationDetailsList = new();
+    private List<int> uniqueSiteIds = new();
+    private int selectedSiteId = 0;
+    private string apiResponse = "";
+    private bool isLoading = true;
+    private bool isError = false;
+    private string errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await Http.GetAsync("https://mg360fieldapplicationapi.azurewebsites.net/all");
+            if (response.IsSuccessStatusCode)
+            {
+                apiResponse = await response.Content.ReadAsStringAsync();
+                stationDetailsList = JsonConvert.DeserializeObject<List<StationDetails>>(apiResponse);
+            }
+            else
+            {
+                // Handle API error
+                isError = true;
+                errorMessage = $"API call failed with status code {response.StatusCode}";
+            }
+            isLoading = false;
+        }
+        catch (Exception ex)
+        {
+            isError = true;
+            errorMessage = ex.Message;
+            isLoading = false;
+        }
+    }
+    private void HandleSiteIdSelection(ChangeEventArgs e)
+    {
+        selectedSiteId = int.Parse(e.Value.ToString());
+    }
+}

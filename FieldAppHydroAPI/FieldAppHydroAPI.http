@@ -1,0 +1,6 @@
+@FieldAppHydroAPI_HostAddress = http://localhost:5284
+
+GET {{FieldAppHydroAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

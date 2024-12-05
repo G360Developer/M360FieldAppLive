@@ -157,7 +157,7 @@ private async Task SubmitData()
 
 <select @bind="selectedStationId">
 
-    @foreach (var station in stations.DistinctBy(s => s.StationID)) 
+    @foreach (var station in stations.Where(s => s.SiteID == selectedSiteId).DistinctBy(s => s.StationID)) 
 
     {
 
